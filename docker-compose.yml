@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  app:
+    container_name: url-shortener
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://db:27017/shortener
+      - REDIS_URL=redis://redis:6379
+  db:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mongo-data:
+  redis-data:
