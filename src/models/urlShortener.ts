@@ -1,3 +1,4 @@
+import { Collection, Db } from 'mongodb'
 import { getDb } from '../connections/db'
 
 interface Url {
@@ -6,8 +7,36 @@ interface Url {
   clicked?: number
 }
 
-export const createUrl = async (params: Url) => {
-  const db = getDb()
-  const urlCollection = db.collection<Url>('urls')
-  return urlCollection.insertOne(params)
+class UrlModel {
+  private db: Db
+  private collection: Collection<Url>
+
+  constructor() {
+    this.db = getDb()
+    this.collection = this.db.collection<Url>('urls')
+  }
+
+  public async createUrl(params: Url) {
+    return this.collection.insertOne(params)
+  }
+
+  public async isShortUrlUnique(shortUrl: string) {
+    const data = await this.collection.findOne({ shortUrl })
+    if (data) return false
+    return true
+  }
+
+  public async findLongUrl(shortUrl: string) {
+    return this.collection.findOne({ shortUrl })
+  }
+
+  public async updateClickCount(shortUrl: string) {
+    return this.collection.updateOne(
+      { shortUrl },
+      { $inc: { clicked: 1 } },
+      { upsert: true }
+    )
+  }
 }
+
+export default UrlModel

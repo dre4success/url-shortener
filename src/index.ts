@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import { connectToDatabase } from './connections/db'
 import { connectToRedis } from './connections/redisClient'
+import urlShortenerRoute from './routes/urlShortener'
 
 dotenv.config()
 
@@ -9,11 +10,9 @@ const app = express()
 
 app.use(express.json())
 
-const port = process.env.PORT || 8080
+app.use('/', urlShortenerRoute)
 
-app.get('/', (req: Request, res: Response) => {
-  return res.json({ message: 'in default route' })
-})
+const port = process.env.PORT || 8080
 
 const startServer = async () => {
   await connectToDatabase()
