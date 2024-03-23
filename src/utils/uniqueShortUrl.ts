@@ -1,4 +1,4 @@
-import UrlModel from '../models/urlShortener'
+import UrlModel from '../models/Urlshorteners'
 
 function toBase62(num: bigint): string {
   const characters =

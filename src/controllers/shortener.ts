@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import UrlModel from '../models/urlShortener'
+import UrlModel from '../models/Urlshorteners'
 import { generateUniqueShortUrl } from '../utils/uniqueShortUrl'
 import { getRedisClient } from '../connections/redisClient'
 
