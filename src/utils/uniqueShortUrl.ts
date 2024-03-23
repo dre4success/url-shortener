@@ -29,8 +29,6 @@ function getBase62String(): string {
   return toBase62(identifier)
 }
 
-console.log(getBase62String())
-
 export async function generateUniqueShortUrl(): Promise<string> {
   const dbModel = new UrlModel()
   let uniqueShortUrl = ''
@@ -39,9 +37,6 @@ export async function generateUniqueShortUrl(): Promise<string> {
   while (!isUnique) {
     uniqueShortUrl = getBase62String()
     isUnique = await dbModel.isShortUrlUnique(uniqueShortUrl)
-    console.log({uniqueShortUrl, isUnique})
   }
   return uniqueShortUrl
 }
-
-

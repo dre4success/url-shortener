@@ -12,7 +12,7 @@ app.use(express.json())
 
 app.use('/', urlShortenerRoute)
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 7070
 
 const startServer = async () => {
   await connectToDatabase()

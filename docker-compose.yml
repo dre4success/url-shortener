@@ -8,12 +8,12 @@ services:
     volumes:
       - .:/usr/src/app
     ports:
-      - "3000:3000"
+      - "7070:7070"
     depends_on:
       - db
       - redis
     environment:
-      - PORT=3000
+      - PORT=7070
       - MONGO_URI=mongodb://db:27017/shortener
       - REDIS_URL=redis://redis:6379
   db:
