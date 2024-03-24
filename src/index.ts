@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import { connectToDatabase } from './connections/db'
 import { connectToRedis } from './connections/redisClient'
-import urlShortenerRoute from './routes/urlShortener'
+import urlShortenerRouter from './routes/urlShortener'
+import userRouter from './routes/users'
 
 dotenv.config()
 
@@ -10,7 +11,8 @@ const app = express()
 
 app.use(express.json())
 
-app.use('/', urlShortenerRoute)
+app.use('/api', userRouter)
+app.use('/', urlShortenerRouter)
 
 const port = process.env.PORT || 7070
 

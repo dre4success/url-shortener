@@ -1,10 +1,11 @@
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, ObjectId } from 'mongodb'
 import { getDb } from '../connections/db'
 
 interface Url {
   fullUrl: string
   shortUrl: string
   clicked?: number
+  userId: ObjectId
 }
 
 class UrlModel {

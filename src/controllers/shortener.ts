@@ -6,11 +6,17 @@ import { getRedisClient } from '../connections/redisClient'
 export const createShortUrl = async (req: Request, res: Response) => {
   const dbModel = new UrlModel()
   const { fullUrl } = req.body
+
   if (!fullUrl)
     return res.status(400).json({ message: 'Please submit your url' })
   try {
     const shortUrl = await generateUniqueShortUrl()
-    await dbModel.createUrl({ fullUrl, shortUrl, clicked: 0 })
+    await dbModel.createUrl({
+      fullUrl,
+      shortUrl,
+      clicked: 0,
+      userId: req.userId,
+    })
 
     let fullShortUrl = `${req.protocol}://${req.get('host')}/${shortUrl}`
     return res.json({

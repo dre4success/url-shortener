@@ -33,3 +33,5 @@ class UserDetails {
     return user._id
   }
 }
+
+export default UserDetails
