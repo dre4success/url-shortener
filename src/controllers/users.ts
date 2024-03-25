@@ -13,13 +13,19 @@ export const registerUser = async (req: Request, res: Response) => {
   if (!password) {
     return res.status(401).json({ message: `Please enter a valid password` })
   }
-  const userCreated = await userModel.registerUser({ email, password })
+  try {
+    
+    const userCreated = await userModel.registerUser({ email, password })
 
-  const token = jwt.sign(
-    { userId: userCreated.insertedId },
-    `${process.env.SECRET}`
-  )
-  res.json({ data: { token } })
+    const token = jwt.sign(
+      { userId: userCreated.insertedId },
+      `${process.env.SECRET}`
+    )
+    res.json({ data: { token } })
+  } catch (error) {
+    console.error('Error processing your request:', error)
+    return res.status(500).json({ message: 'Error processing your request' })
+  }
 }
 
 export const loginUser = async (req: Request, res: Response) => {

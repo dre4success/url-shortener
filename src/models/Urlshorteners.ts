@@ -1,5 +1,6 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 import { getDb } from '../connections/db'
+import { DBCollections } from '../connections/types'
 
 interface Url {
   fullUrl: string
@@ -9,12 +10,12 @@ interface Url {
 }
 
 class UrlModel {
-  private db: Db
-  private collection: Collection<Url>
+  collection: Collection<Url>
+  private db?: Db
 
-  constructor() {
-    this.db = getDb()
-    this.collection = this.db.collection<Url>('urls')
+  constructor(db?: Db) {
+    this.db = db || getDb()
+    this.collection = this.db.collection<Url>(DBCollections.URLS)
   }
 
   public async createUrl(params: Url) {
@@ -37,6 +38,9 @@ class UrlModel {
       { $inc: { clicked: 1 } },
       { upsert: true }
     )
+  }
+  public async deleteLongUrl(shortUrl: string, userId: ObjectId) {
+    return this.collection.deleteOne({ userId, shortUrl })
   }
 }
 

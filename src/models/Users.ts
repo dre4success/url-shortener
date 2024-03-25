@@ -1,6 +1,7 @@
 import { Db, Collection } from 'mongodb'
 import bcrypt from 'bcrypt'
 import { getDb } from '../connections/db'
+import { DBCollections } from '../connections/types'
 
 interface Users {
   email: string
@@ -9,11 +10,11 @@ interface Users {
 
 class UserDetails {
   private db: Db
-  private collection: Collection<Users>
+  collection: Collection<Users>
 
-  constructor() {
-    this.db = getDb()
-    this.collection = this.db.collection('users')
+  constructor(db?: Db) {
+    this.db = db || getDb()
+    this.collection = this.db.collection(DBCollections.USERS)
   }
 
   public async registerUser({ email, password }: Users) {
