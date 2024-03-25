@@ -6,7 +6,7 @@ export const authCheck = (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     return res.status(401).json({ message: `Please login or signup` })
   }
-  console.log({ secretInAuth: `${process.env.SECRET}`, token })
+
   const decoded = jwt.verify(token, `${process.env.SECRET}`) as JwtPayload
   const userId = decoded.userId
   req.userId = userId

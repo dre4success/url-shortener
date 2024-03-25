@@ -61,9 +61,11 @@ export const deleteShortUrl = async (req: Request, res: Response) => {
 
     const userId = req.userId
     const { shorturl } = req.params
-    await dbModel.deleteLongUrl(shorturl, userId)
-    await redisClient.del(shorturl)
-    return res.status(200)
+
+    dbModel.deleteLongUrl(shorturl, userId)
+    redisClient.del(shorturl)
+
+    return res.status(200).json({ message: `successfully deleted` })
   } catch (error) {
     console.error('Error during redirect:', error)
     return res.status(500).json({ message: 'Error processing your request' })
